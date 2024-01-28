@@ -1,4 +1,5 @@
-import pygame 
+import pygame
+from utils import convert_data
 
 class Labyrinthe :
     # constructeur
@@ -6,6 +7,8 @@ class Labyrinthe :
         """sizeX, sizeY désignent la taille du labyrinthe sur l'axe (x,y)"""
         self.sizeX = sizeX
         self.sizeY = sizeY
+        self.version = ""
+        self.author = ""
         #attention création d'une matrice en Y X
         self.matrice = [ [0]* self.sizeX for _ in range(self.sizeY) ]
 
@@ -41,13 +44,31 @@ class Labyrinthe :
     def load_from_file(self, filename):
         """Charge un labyrinthe d'un fichier texte"""
         with open(filename) as file:
+            #lecture du cartouche du labyrinthe
+            # 1) vérification du type de fichier
+            firstline = file.readline()
+            firstline = firstline.rstrip()
+            firstline = firstline.split(',')
+            if firstline[0] != "map":
+                print("mauvais fichier")
+                return
+            self.version = firstline[1]
+            self.author = firstline[2]
+            # 2) vérification de la taille du labyrinthe
+            snd_line = file.readline()
+            snd_line = snd_line.rstrip()
+            snd_line = snd_line.split(',')            
+            if int(snd_line[0])!=self.sizeX or int(snd_line[1])!=self.sizeY:
+                print("dimensions non cohérentes")
+                return
+            #lecture des données du labyrinthe
             lines = [line.rstrip() for line in file]
         #print(lines)
         for i in range(len(lines)):
             tmp = lines[i]
             tmp_list = tmp.split(',')
             for j in range(len(tmp_list)):
-                tmp_list[j]= int(tmp_list[j])
+                    tmp_list[j]= convert_data(tmp_list[j])
             #print(tmp_list)
             self.matrice[i]=tmp_list
     
