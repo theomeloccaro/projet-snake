@@ -22,7 +22,7 @@ color = {
 }
 
 laby = Labyrinthe(size[0], size[1])
-laby.load_from_file("data/laby-02.csv")
+laby.load_from_file("data/laby-02.dat")
 screen = pygame.display.set_mode((size[0]*tilesize, size[1]*tilesize))
 clock = pygame.time.Clock()
 running = True
