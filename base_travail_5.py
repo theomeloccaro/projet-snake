@@ -52,12 +52,16 @@ while running:
         if event.type == pygame.KEYUP:
             if event.key == pygame.K_z or event.key == pygame.K_UP:
                 keys['UP'] = 0
+                next_move =1
             if event.key == pygame.K_s or event.key == pygame.K_DOWN:
                 keys['DOWN'] = 0
+                next_move =1
             if event.key == pygame.K_q or event.key == pygame.K_LEFT:
                 keys['LEFT'] = 0
+                next_move =1
             if event.key == pygame.K_d or event.key == pygame.K_RIGHT:
                 keys['RIGHT'] = 0
+                next_move =1
 
             if event.key == pygame.K_ESCAPE:
                 running = False
