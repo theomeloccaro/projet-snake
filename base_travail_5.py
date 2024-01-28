@@ -22,7 +22,10 @@ color = {
     "wall_color" : "#000000"
 }
 
+level = "data/laby-02.dat"
+
 laby = Labyrinthe(size[0], size[1])
+laby.load_from_file(level)
 laby.set_color(color["wall_color"])
 
 grid = Grid(size[0], size[1],tilesize)
