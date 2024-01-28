@@ -70,8 +70,6 @@ while running:
             pos = pygame.mouse.get_pos()
             print("mouse_pos:", pos)
     
-
-
     next_move += dt
     # gestion des déplacements
     if next_move>0:
@@ -85,10 +83,8 @@ while running:
         elif keys['RIGHT'] == 1:
             new_x += 1
 
-
-
         # vérification du déplacement du joueur                                    
-        if not laby.hitBox(new_x, new_y):
+        if not laby.hit_box(new_x, new_y):
             player_pos.x, player_pos.y = new_x, new_y
             next_move -= player_speed
 

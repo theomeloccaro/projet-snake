@@ -1,4 +1,3 @@
-import random
 import pygame 
 
 class Labyrinthe :
@@ -10,7 +9,7 @@ class Labyrinthe :
         #attention création d'une matrice en Y X
         self.matrice = [ [0]* self.sizeX for _ in range(self.sizeY) ]
 
-    def affiche(self):
+    def display_on_console(self):
         """Sortie console du labyrinthe"""
         for j in range(self.sizeY):
             for i in range(self.sizeX):
@@ -35,7 +34,7 @@ class Labyrinthe :
         """Renvoie la taille (x,y) du labyrinthe"""
         return (self.sizeX, self.sizeY)
     
-    def détruire_mur(self, i,j):
+    def wall_destroy(self, i,j):
         """Détruit un mur du labyrinthe en (i,j) sur l'axe (x,y)"""
         self.matrice[j][i]=0
 
@@ -49,23 +48,24 @@ class Labyrinthe :
             tmp_list = tmp.split(',')
             for j in range(len(tmp_list)):
                 tmp_list[j]= int(tmp_list[j])
-            print(tmp_list)
+            #print(tmp_list)
             self.matrice[i]=tmp_list
     
-    def hitBox(self, x, y):
+    def hit_box(self, x, y):
+        """indique si l'élément (x,y) est un mur"""
         return self.matrice[y][x] == 1
 
-
     def draw(self, screen, tilesize):
+        """dessine le labyrithne sur la fenètre screen"""
         for j in range(self.sizeY):
             for i in range(self.sizeX):
                 if self.matrice[j][i] == 1:
                     pygame.draw.rect(screen, (0, 0, 0), (i * tilesize, j * tilesize, tilesize, tilesize))
 
 
-laby = Labyrinthe(20,10)
-laby.load_from_file("laby-02.csv")
-laby.affiche()
+#laby = Labyrinthe(20,10)
+#laby.load_from_file("laby-02.csv")
+#laby.display_on_console()
 
 """
 l1 = [1, 2, 3, 4, 5]
