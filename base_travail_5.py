@@ -13,10 +13,12 @@ player_speed = 150 # vitesse du joueur
 next_move = 0 #tic avant déplacement
 
 # color
-ground_color = "#EDDACF"
-grid_color = "#7F513D"
-player_color = "#9F715D"
-wall_color = "#000000"
+color = {
+    "ground_color" : "#EDDACF",
+    "grid_color" : "#7F513D",
+    "player_color" : "#9F715D",
+    "wall_color" : "#000000"
+}
 
 laby = Labyrinthe(size[0], size[1])
 laby.load_from_file("laby-02.csv")
@@ -33,7 +35,7 @@ player_pos = pygame.Vector2(round(0), round(1))
 
 #tour de boucle, pour chaque FPS
 while running:
-    screen.fill(ground_color)
+    screen.fill(color["ground_color"])
 
     # lecture clavier / souris
     for event in pygame.event.get():
@@ -96,17 +98,17 @@ while running:
         if show_pos:
             print("pos: ",player_pos)
 
-    laby.draw(screen, wall_color, tilesize)
+    laby.draw(screen, color["wall_color"], tilesize)
 
     # affichage des différents composants
     if show_grid:
         for i in range(1,size[0]):
-            pygame.draw.line(screen,grid_color, (tilesize*i, 0), (tilesize*i, tilesize*size[0]) )
+            pygame.draw.line(screen,color["grid_color"], (tilesize*i, 0), (tilesize*i, tilesize*size[0]) )
         for i in range(0,size[1]):
-            pygame.draw.line(screen,grid_color, (0, tilesize*i), (tilesize*size[0], tilesize*i) )
+            pygame.draw.line(screen, color["grid_color"], (0, tilesize*i), (tilesize*size[0], tilesize*i) )
 
     #affichage du joueur
-    pygame.draw.rect(screen, player_color, pygame.Rect(player_pos.x*tilesize, player_pos.y*tilesize, tilesize, tilesize))
+    pygame.draw.rect(screen, color["player_color"], pygame.Rect(player_pos.x*tilesize, player_pos.y*tilesize, tilesize, tilesize))
 
     pygame.display.flip()
     dt = clock.tick(fps)
