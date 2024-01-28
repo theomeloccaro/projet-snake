@@ -37,9 +37,12 @@ player_pos = Pos(0,1)
 
 #tour de boucle, pour chaque FPS
 while running:
-    screen.fill(color["ground_color"])
 
-    # lecture clavier / souris
+    #
+    #   Gestion des I/O  
+    #
+    
+    #   lecture clavier / souris
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
@@ -78,9 +81,12 @@ while running:
         if event.type == pygame.MOUSEBUTTONDOWN:
             pos = pygame.mouse.get_pos()
             print("mouse_pos:", pos)
-    
-    next_move += dt
+
+    #
     # gestion des déplacements
+    #
+
+    next_move += dt
     if next_move>0:
         new_x, new_y = player_pos.x, player_pos.y
         if keys['UP'] == 1:
@@ -100,19 +106,24 @@ while running:
         if show_pos:
             print("pos: ",player_pos)
 
+    #
+    # affichage des différents composants graphique
+    #
+    screen.fill(color["ground_color"])
+
     laby.draw(screen, color["wall_color"], tilesize)
 
-    # affichage des différents composants
     if show_grid:
         for i in range(1,size[0]):
             pygame.draw.line(screen,color["grid_color"], (tilesize*i, 0), (tilesize*i, tilesize*size[0]) )
         for i in range(0,size[1]):
             pygame.draw.line(screen, color["grid_color"], (0, tilesize*i), (tilesize*size[0], tilesize*i) )
 
-    #affichage du joueur
     pygame.draw.rect(screen, color["player_color"], pygame.Rect(player_pos.x*tilesize, player_pos.y*tilesize, tilesize, tilesize))
 
+    # affichage des modification du screen_view
     pygame.display.flip()
+    # gestion fps
     dt = clock.tick(fps)
 
 pygame.quit()
