@@ -2,6 +2,7 @@
 import pygame 
 import random
 from labyrinthe import Labyrinthe
+from grid import Grid
 from utils import Pos
 # pygame setup
 pygame.init()
@@ -22,7 +23,8 @@ color = {
 }
 
 laby = Labyrinthe(size[0], size[1])
-laby.load_from_file("data/laby-02.dat")
+grid = Grid(size[0], size[1],tilesize)
+
 screen = pygame.display.set_mode((size[0]*tilesize, size[1]*tilesize))
 clock = pygame.time.Clock()
 running = True
@@ -114,10 +116,7 @@ while running:
     laby.draw(screen, color["wall_color"], tilesize)
 
     if show_grid:
-        for i in range(1,size[0]):
-            pygame.draw.line(screen,color["grid_color"], (tilesize*i, 0), (tilesize*i, tilesize*size[0]) )
-        for i in range(0,size[1]):
-            pygame.draw.line(screen, color["grid_color"], (0, tilesize*i), (tilesize*size[0], tilesize*i) )
+        grid.draw(screen, color["grid_color"])
 
     pygame.draw.rect(screen, color["player_color"], pygame.Rect(player_pos.x*tilesize, player_pos.y*tilesize, tilesize, tilesize))
 
