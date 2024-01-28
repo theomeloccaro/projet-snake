@@ -2,6 +2,7 @@
 import pygame 
 import random
 from labyrinthe import Labyrinthe
+from utils import Pos
 # pygame setup
 pygame.init()
 
@@ -26,12 +27,13 @@ screen = pygame.display.set_mode((size[0]*tilesize, size[1]*tilesize))
 clock = pygame.time.Clock()
 running = True
 dt = 0
+
 show_grid = True
 show_pos = False
 
 keys= { "UP":0 , "DOWN":0, "LEFT":0, "RIGHT":0 }
 
-player_pos = pygame.Vector2(round(0), round(1))
+player_pos = Pos(0,1)
 
 #tour de boucle, pour chaque FPS
 while running:
@@ -80,7 +82,7 @@ while running:
     next_move += dt
     # gestion des déplacements
     if next_move>0:
-        new_x, new_y = int(player_pos.x),int(player_pos.y)
+        new_x, new_y = player_pos.x, player_pos.y
         if keys['UP'] == 1:
             new_y -=1
         elif keys['DOWN'] == 1:
