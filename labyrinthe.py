@@ -53,6 +53,8 @@ class Labyrinthe :
     
     def hit_box(self, x, y):
         """indique si l'élément (x,y) est un mur"""
+        if x>=self.sizeX or x<0 or y<0 or y>=self.sizeY:
+            return 1
         return self.matrice[y][x] == 1
 
     def draw(self, screen, tilesize):
