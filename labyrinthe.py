@@ -57,12 +57,12 @@ class Labyrinthe :
             return 1
         return self.matrice[y][x] == 1
 
-    def draw(self, screen, tilesize):
+    def draw(self, screen, color , tilesize):
         """dessine le labyrithne sur la fenètre screen"""
         for j in range(self.sizeY):
             for i in range(self.sizeX):
                 if self.matrice[j][i] == 1:
-                    pygame.draw.rect(screen, (0, 0, 0), (i * tilesize, j * tilesize, tilesize, tilesize))
+                    pygame.draw.rect(screen, color , (i * tilesize, j * tilesize, tilesize, tilesize))
 
 
 #laby = Labyrinthe(20,10)

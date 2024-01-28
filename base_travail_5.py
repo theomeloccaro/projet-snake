@@ -16,6 +16,7 @@ next_move = 0 #tic avant déplacement
 ground_color = "#EDDACF"
 grid_color = "#7F513D"
 player_color = "#9F715D"
+wall_color = "#000000"
 
 laby = Labyrinthe(size[0], size[1])
 laby.load_from_file("laby-02.csv")
@@ -95,7 +96,7 @@ while running:
         if show_pos:
             print("pos: ",player_pos)
 
-    laby.draw(screen, tilesize)
+    laby.draw(screen, wall_color, tilesize)
 
     # affichage des différents composants
     if show_grid:
