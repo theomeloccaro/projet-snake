@@ -12,6 +12,10 @@ class Labyrinthe :
         #attention création d'une matrice en Y X
         self.matrice = [ [0]* self.sizeX for _ in range(self.sizeY) ]
 
+    def set_color(self, v):
+        """Fixe la couleur pour dessiner les murs"""
+        self.color = v
+
     def display_on_console(self):
         """Sortie console du labyrinthe"""
         for j in range(self.sizeY):
@@ -78,12 +82,12 @@ class Labyrinthe :
             return 1
         return self.matrice[y][x] == 1
 
-    def draw(self, screen, color , tilesize):
+    def draw(self, screen, tilesize):
         """dessine le labyrithne sur la fenètre screen"""
         for j in range(self.sizeY):
             for i in range(self.sizeX):
                 if self.matrice[j][i] == 1:
-                    pygame.draw.rect(screen, color , (i * tilesize, j * tilesize, tilesize, tilesize))
+                    pygame.draw.rect(screen, self.color , (i * tilesize, j * tilesize, tilesize, tilesize))
 
 
 #laby = Labyrinthe(20,10)

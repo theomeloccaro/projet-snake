@@ -23,7 +23,10 @@ color = {
 }
 
 laby = Labyrinthe(size[0], size[1])
+laby.set_color(color["wall_color"])
+
 grid = Grid(size[0], size[1],tilesize)
+grid.set_color(color["grid_color"])
 
 screen = pygame.display.set_mode((size[0]*tilesize, size[1]*tilesize))
 clock = pygame.time.Clock()
@@ -113,10 +116,10 @@ while running:
     #
     screen.fill(color["ground_color"])
 
-    laby.draw(screen, color["wall_color"], tilesize)
+    laby.draw(screen, tilesize)
 
     if show_grid:
-        grid.draw(screen, color["grid_color"])
+        grid.draw(screen)
 
     pygame.draw.rect(screen, color["player_color"], pygame.Rect(player_pos.x*tilesize, player_pos.y*tilesize, tilesize, tilesize))
 
