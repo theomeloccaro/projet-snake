@@ -5,6 +5,7 @@ from labyrinthe import Labyrinthe
 from grid import Grid
 from utils import Pos
 from IO import InputHandler
+import time
 # pygame setup
 pygame.init()
 
@@ -20,21 +21,9 @@ color = {
     "ground_color" : "#EDDACF",
     "grid_color" : "#7F513D",
     "player_color" : "#9F715D",
-    "wall_color" : "#000000"
+    "wall_color" : "#000000",
+    "exit_color" : "#FF0000"
 }
-
-level = "data/laby-02.dat"
-
-laby = Labyrinthe(size[0], size[1])
-laby.load_from_file(level)
-laby.set_color(color["wall_color"])
-
-grid = Grid(size[0], size[1],tilesize)
-grid.set_color(color["grid_color"])
-
-screen = pygame.display.set_mode((size[0]*tilesize, size[1]*tilesize))
-clock = pygame.time.Clock() 
-
 def read_color_parameters(filename):
     with open(filename, 'r') as file:
         for line in file:
@@ -49,6 +38,18 @@ def read_color_parameters(filename):
             if key in color:
                 color[key] = value
                 print(f"{key} mis à jour avec la valeur {value}")   
+
+level = "data/laby-02.dat"
+
+laby = Labyrinthe(size[0], size[1])
+laby.load_from_file(level)
+laby.set_color(color["wall_color"])
+
+grid = Grid(size[0], size[1],tilesize)
+grid.set_color(color["grid_color"])
+
+screen = pygame.display.set_mode((size[0]*tilesize, size[1]*tilesize))
+clock = pygame.time.Clock() 
 
 running = True
 dt = 0
@@ -115,5 +116,11 @@ while running:
     pygame.display.flip()
     # gestion fps
     dt = clock.tick(fps)
+
+    # Vérifier si le joueur est arrivé à la sortie
+    if grid.arriver(player_pos.x, player_pos.y):
+        print("Vous êtes arrivé à la sortie. BRAVO!")
+        running = False  # Arrêter la boucle
+        time.sleep(5)
 
 pygame.quit()
