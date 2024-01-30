@@ -14,7 +14,7 @@ size = (20, 10) # taille du monde
 fps = 30 # fps du jeu
 player_speed = 150 # vitesse du joueur
 next_move = 0 #tic avant déplacement
-
+filename='color.ini'
 # color
 color = {
     "ground_color" : "#EDDACF",
@@ -35,6 +35,20 @@ grid.set_color(color["grid_color"])
 screen = pygame.display.set_mode((size[0]*tilesize, size[1]*tilesize))
 clock = pygame.time.Clock() 
 
+def read_color_parameters(filename):
+    with open(filename, 'r') as file:
+        for line in file:
+            # Ignorer les lignes vides ou celles commençant par #
+            if not line.strip() or line.startswith('ini'):
+                continue
+            line = line[:-1]            
+            # Diviser la ligne en clé et valeur
+            key, value = map(str.strip, line.split('='))
+
+            # Mettre à jour le dictionnaire Color si la clé existe
+            if key in color:
+                color[key] = value
+                print(f"{key} mis à jour avec la valeur {value}")   
 
 running = True
 dt = 0
@@ -44,6 +58,9 @@ show_pos = False
 keys= { "UP":0 , "DOWN":0, "LEFT":0, "RIGHT":0 }
 
 player_pos = Pos(0,1)
+
+# Appeler la fonction pour lire les paramètres de couleur
+read_color_parameters('color.ini')
 
 # Utilisation de la classe dans le programme principal
 input_handler = InputHandler(keys)
