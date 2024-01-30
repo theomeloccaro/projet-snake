@@ -6,6 +6,7 @@ from grid import Grid
 from utils import Pos
 from IO import InputHandler
 import time
+
 # pygame setup
 pygame.init()
 
@@ -22,7 +23,8 @@ color = {
     "grid_color" : "#7F513D",
     "player_color" : "#9F715D",
     "wall_color" : "#000000",
-    "exit_color" : "#FF0000"
+    "exit_color" : "#FF0000",
+    "cross_color" : "#00FFFF"    
 }
 def read_color_parameters(filename):
     with open(filename, 'r') as file:
@@ -66,14 +68,12 @@ read_color_parameters('color.ini')
 # Utilisation de la classe dans le programme principal
 input_handler = InputHandler(keys)
 
-#tour de boucle, pour chaque FPS
-while running:
 
+#tour de boucle, pour chaque FPS
+while running:    
     #
-    #   Gestion des I/O  
+    #   Gestion des I/O  clavier / souris
     #
-    
-    #   lecture clavier / souris
     keys, running, show_grid, show_pos = input_handler.event_Polling(keys, running, show_grid, show_pos)
     
     #
@@ -111,7 +111,12 @@ while running:
         grid.draw(screen)
 
     pygame.draw.rect(screen, color["player_color"], pygame.Rect(player_pos.x*tilesize, player_pos.y*tilesize, tilesize, tilesize))
-
+    
+    #croix dans la dernière case
+    pygame.draw.line(screen,color["cross_color"],((size[0]-1)*tilesize,(size[1]-2)*tilesize),(size[0]*tilesize,(size[1]-1)*tilesize),2)
+    pygame.draw.line(screen,color["cross_color"],(size[0]*tilesize,(size[1]-2)*tilesize),((size[0]-1)*tilesize,(size[1]-1)*tilesize),2)
+    
+    
     # affichage des modification du screen_view
     pygame.display.flip()
     # gestion fps
