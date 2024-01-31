@@ -5,6 +5,7 @@ from labyrinthe import Labyrinthe
 from grid import Grid
 from utils import Pos
 from IO import InputHandler
+from item import Item
 import time
 
 # pygame setup
@@ -24,7 +25,8 @@ color = {
     "player_color" : "#9F715D",
     "wall_color" : "#000000",
     "exit_color" : "#FF0000",
-    "cross_color" : "#00FFFF"    
+    "cross_color" : "#00FFFF",
+    "item_color" : "#FF7F00"  
 }
 def read_color_parameters(filename):
     with open(filename, 'r') as file:
@@ -68,6 +70,8 @@ read_color_parameters('color.ini')
 # Utilisation de la classe dans le programme principal
 input_handler = InputHandler(keys)
 
+#création item
+item = Item(screen,tilesize,color["item_color"])
 
 #tour de boucle, pour chaque FPS
 while running:    
@@ -116,7 +120,8 @@ while running:
     pygame.draw.line(screen,color["cross_color"],((size[0]-1)*tilesize,(size[1]-2)*tilesize),(size[0]*tilesize,(size[1]-1)*tilesize),2)
     pygame.draw.line(screen,color["cross_color"],(size[0]*tilesize,(size[1]-2)*tilesize),((size[0]-1)*tilesize,(size[1]-1)*tilesize),2)
     
-    
+    # test triangle
+    item.pos_item(2,2,screen,tilesize,"#FF7F00")
     # affichage des modification du screen_view
     pygame.display.flip()
     # gestion fps
