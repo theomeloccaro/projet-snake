@@ -71,7 +71,9 @@ read_color_parameters('color.ini')
 input_handler = InputHandler(keys)
 
 #création item
-item = Item(screen,tilesize,color["item_color"],2,2)
+item = Item(screen,tilesize,color["item_color"],2,4)
+itemFound = False
+DisplayMessage = False
 
 #tour de boucle, pour chaque FPS
 while running:    
@@ -100,6 +102,8 @@ while running:
         if not laby.hit_box(new_x, new_y):
             player_pos.x, player_pos.y = new_x, new_y
             next_move -= player_speed
+            if new_x == item.x and new_y == item.y:
+                itemFound = True
 
         if show_pos:
             print("pos: ",player_pos)
@@ -129,8 +133,14 @@ while running:
 
     # Vérifier si le joueur est arrivé à la sortie
     if grid.arriver(player_pos.x, player_pos.y):
-        print("Vous êtes arrivé à la sortie. BRAVO!")
-        running = False  # Arrêter la boucle
-        time.sleep(5)
-
+        if not DisplayMessage:
+            if itemFound:
+                print("arrivé avec 1 item, level validé")
+                running = False
+                time.sleep(5)
+            else:
+                print("arrivé sans item, level en attente de validation, rechercher le diamant")
+            DisplayMessage = True
+    else:
+        DisplayMessage = False
 pygame.quit()
