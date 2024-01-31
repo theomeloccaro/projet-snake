@@ -71,7 +71,7 @@ read_color_parameters('color.ini')
 input_handler = InputHandler(keys)
 
 #création item
-item = Item(screen,tilesize,color["item_color"])
+item = Item(screen,tilesize,color["item_color"],2,2)
 
 #tour de boucle, pour chaque FPS
 while running:    
@@ -121,7 +121,7 @@ while running:
     pygame.draw.line(screen,color["cross_color"],(size[0]*tilesize,(size[1]-2)*tilesize),((size[0]-1)*tilesize,(size[1]-1)*tilesize),2)
     
     # test triangle
-    item.pos_item(2,2,screen,tilesize,"#FF7F00")
+    item.pos_item()
     # affichage des modification du screen_view
     pygame.display.flip()
     # gestion fps
