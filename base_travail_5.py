@@ -11,9 +11,53 @@ import time
 # pygame setup
 pygame.init()
 
+size_x = 20
+size_y = 10
+tilesize = 32
+level = "data/laby-02.dat"
+nb_items = 0
+array_pos_item = [[0,0],[0,0],[0,0]]
+
+
+#Lecture fichier conf.ini
+def read_configuration(size_x, size_y, tilesize,level,nb_items, array_pos_item):
+    with open('conf.ini', 'r') as file:
+        i = 0
+        for line in file:
+            # Ignorer les lignes vides ou celles commençant par #
+            if not line.strip() or line.startswith('ini'):
+                continue
+            line = line[:-1]
+            # Diviser la ligne en clé et valeur
+            
+            if line.startswith('size_x'):
+                    key, value = map(str.strip, line.split('='))
+                    size_x = int(value)
+            elif line.startswith('size_y'):
+                    key, value = map(str.strip, line.split('='))
+                    size_y = int(value)
+            elif line.startswith('tilesize'):
+                    key, value = map(str.strip, line.split('='))
+                    tilesize = int(value)
+            elif line.startswith('level'):
+                    key, value = map(str.strip, line.split('='))
+                    level = value
+            elif line.startswith('nb_items'):
+                    key, value = map(str.strip, line.split('='))
+                    nb_items = int(value)
+            else:
+                 key, value = map(str.strip, line.split(','))
+                 array_pos_item[i][0] = int(key)
+                 array_pos_item[i][1] = int(value)
+                 i = i+1
+
+    return size_x, size_y, tilesize,level,nb_items, array_pos_item
+
+
+size_x, size_y, tilesize,level,nb_items, array_pos_item = read_configuration(size_x, size_y, tilesize,level,nb_items, array_pos_item)
 #constantes
-tilesize = 32 # taille d'une tuile IG
-size = (20, 10) # taille du monde
+#tilesize = tile # taille d'une tuile IG
+size = (size_x, size_y) # taille du monde
 fps = 30 # fps du jeu
 player_speed = 150 # vitesse du joueur
 next_move = 0 #tic avant déplacement
@@ -43,7 +87,7 @@ def read_color_parameters(filename):
                 color[key] = value
                 print(f"{key} mis à jour avec la valeur {value}")   
 
-level = "data/laby-02.dat"
+
 
 laby = Labyrinthe(size[0], size[1])
 laby.load_from_file(level)
@@ -70,8 +114,8 @@ read_color_parameters('color.ini')
 # Utilisation de la classe dans le programme principal
 input_handler = InputHandler(keys)
 
-#création item
-item = Item(screen,tilesize,color["item_color"],2,4)
+#création items
+item = Item(screen,tilesize,color["item_color"],array_pos_item[nb_items-1][0],array_pos_item[nb_items-1][1])
 itemFound = False
 DisplayMessage = False
 
@@ -135,11 +179,11 @@ while running:
     if grid.arriver(player_pos.x, player_pos.y):
         if not DisplayMessage:
             if itemFound:
-                print("arrivé avec 1 item, level validé")
+                print("Arrivé avec 1 item, level validé")
                 running = False
                 time.sleep(5)
             else:
-                print("arrivé sans item, level en attente de validation, rechercher le diamant")
+                print("Arrivé sans item, level en attente de validation, rechercher le diamant")
             DisplayMessage = True
     else:
         DisplayMessage = False
