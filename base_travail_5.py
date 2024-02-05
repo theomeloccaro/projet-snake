@@ -6,6 +6,7 @@ from grid import Grid
 from utils import Pos
 from IO import InputHandler
 from item import Item
+from alien import Alien
 import time
 
 # pygame setup
@@ -16,13 +17,17 @@ size_y = 10
 tilesize = 32
 level = "data/laby-02.dat"
 nb_items = 0
+nb_aliens = 0
 array_pos_item = []
+array_pos_aliens = []
 items = []
+aliens = []
 
 #Lecture fichier conf.ini
-def read_configuration(size_x, size_y, tilesize,level,nb_items, array_pos_item):
+def read_configuration(size_x, size_y, tilesize,level,nb_items, array_pos_item,nb_aliens,array_pos_aliens):
     with open('conf.ini', 'r') as file:
-        i = 0
+        nb_items_bis = 0
+        nb_aliens_bis = 0
         for line in file:
             # Ignorer les lignes vides ou celles commençant par #
             if not line.strip() or line.startswith('ini'):
@@ -45,15 +50,28 @@ def read_configuration(size_x, size_y, tilesize,level,nb_items, array_pos_item):
             elif line.startswith('nb_items'):
                     key, value = map(str.strip, line.split('='))
                     nb_items = int(value)
-            else:
+                    nb_items_bis = nb_items
+            elif nb_items_bis != 0:
                  key, value = map(str.strip, line.split(','))
                  array_pos_item.append((int(key), int(value)))
+                 nb_items_bis = nb_items_bis-1
+            elif line.startswith('nb_aliens'):
+                    key, value = map(str.strip, line.split('='))
+                    nb_aliens = int(value)
+                    nb_aliens_bis = nb_aliens
+            elif nb_aliens_bis != 0:
+                 key, value = map(str.strip, line.split(','))
+                 array_pos_aliens.append((int(key), int(value)))
+                 nb_aliens_bis = nb_aliens_bis-1
+            
+                         
+            
 
 
-    return size_x, size_y, tilesize,level,nb_items, array_pos_item
+    return size_x, size_y, tilesize,level,nb_items, array_pos_item,nb_aliens,array_pos_aliens
 
 
-size_x, size_y, tilesize,level,nb_items, array_pos_item = read_configuration(size_x, size_y, tilesize,level,nb_items, array_pos_item)
+size_x, size_y, tilesize,level,nb_items, array_pos_item,nb_aliens,array_pos_aliens = read_configuration(size_x, size_y, tilesize,level,nb_items, array_pos_item,nb_aliens,array_pos_aliens)
 #constantes
 #tilesize = tile # taille d'une tuile IG
 size = (size_x, size_y) # taille du monde
@@ -69,7 +87,8 @@ color = {
     "wall_color" : "#000000",
     "exit_color" : "#FF0000",
     "cross_color" : "#00FFFF",
-    "item_color" : "#FF7F00"  
+    "item_color" : "#FF7F00" ,
+    "alien_color" : "#FF7F00"
 }
 def read_color_parameters(filename):
     with open(filename, 'r') as file:
@@ -117,7 +136,13 @@ input_handler = InputHandler(keys)
 
 #création items
 for i in range(len(array_pos_item)):
-    items.append(Item(screen,tilesize,color["item_color"],array_pos_item[i][0],array_pos_item[i][1]))
+    if not laby.hit_box(array_pos_item[i][0],array_pos_item[i][1]):
+        items.append(Item(screen,tilesize,color["item_color"],array_pos_item[i][0],array_pos_item[i][1]))
+
+#création alien
+for i in range(len(array_pos_aliens)):
+    if not laby.hit_box(array_pos_aliens[i][0],array_pos_aliens[i][1]):
+        aliens.append(Alien(screen,tilesize,color["alien_color"],array_pos_aliens[i][0],array_pos_aliens[i][1],2)) 
 
 itemFound = False
 DisplayMessage = False
@@ -149,8 +174,9 @@ while running:
         if not laby.hit_box(new_x, new_y):
             player_pos.x, player_pos.y = new_x, new_y
             next_move -= player_speed
-            # if new_x == item.x and new_y == item.y:
-            #     itemFound = True
+            for j in range (len(array_pos_item)):
+                if new_x == array_pos_item[j][0] and new_y == array_pos_item[j][1]:
+                    itemFound = True
 
         if show_pos:
             print("pos: ",player_pos)
@@ -171,9 +197,14 @@ while running:
     pygame.draw.line(screen,color["cross_color"],((size[0]-1)*tilesize,(size[1]-2)*tilesize),(size[0]*tilesize,(size[1]-1)*tilesize),2)
     pygame.draw.line(screen,color["cross_color"],(size[0]*tilesize,(size[1]-2)*tilesize),((size[0]-1)*tilesize,(size[1]-1)*tilesize),2)
     
-    # test triangle
+    # test items
     for elt in items:
         elt.pos_item()
+    
+    #test aliens
+    for ali in aliens:
+         ali.pos_alien()
+    
     # affichage des modification du screen_view
     pygame.display.flip()
     # gestion fps
