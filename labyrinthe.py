@@ -88,6 +88,8 @@ class Labyrinthe :
             for i in range(self.sizeX):
                 if self.matrice[j][i] == 1:
                     pygame.draw.rect(screen, self.color , (i * tilesize, j * tilesize, tilesize, tilesize))
+                if self.matrice[j][i] == 3:
+                    pygame.draw.rect(screen, "#0000FF" , (i * tilesize, j * tilesize, tilesize, tilesize))
 
 
 #laby = Labyrinthe(20,10)

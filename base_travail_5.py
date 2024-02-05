@@ -16,8 +16,8 @@ size_y = 10
 tilesize = 32
 level = "data/laby-02.dat"
 nb_items = 0
-array_pos_item = [[0,0],[0,0],[0,0]]
-
+array_pos_item = []
+items = []
 
 #Lecture fichier conf.ini
 def read_configuration(size_x, size_y, tilesize,level,nb_items, array_pos_item):
@@ -47,9 +47,8 @@ def read_configuration(size_x, size_y, tilesize,level,nb_items, array_pos_item):
                     nb_items = int(value)
             else:
                  key, value = map(str.strip, line.split(','))
-                 array_pos_item[i][0] = int(key)
-                 array_pos_item[i][1] = int(value)
-                 i = i+1
+                 array_pos_item.append((int(key), int(value)))
+
 
     return size_x, size_y, tilesize,level,nb_items, array_pos_item
 
@@ -97,6 +96,8 @@ grid = Grid(size[0], size[1],tilesize)
 grid.set_color(color["grid_color"])
 
 screen = pygame.display.set_mode((size[0]*tilesize, size[1]*tilesize))
+
+
 clock = pygame.time.Clock() 
 
 running = True
@@ -115,7 +116,9 @@ read_color_parameters('color.ini')
 input_handler = InputHandler(keys)
 
 #création items
-item = Item(screen,tilesize,color["item_color"],array_pos_item[nb_items-1][0],array_pos_item[nb_items-1][1])
+for i in range(len(array_pos_item)):
+    items.append(Item(screen,tilesize,color["item_color"],array_pos_item[i][0],array_pos_item[i][1]))
+
 itemFound = False
 DisplayMessage = False
 
@@ -146,8 +149,8 @@ while running:
         if not laby.hit_box(new_x, new_y):
             player_pos.x, player_pos.y = new_x, new_y
             next_move -= player_speed
-            if new_x == item.x and new_y == item.y:
-                itemFound = True
+            # if new_x == item.x and new_y == item.y:
+            #     itemFound = True
 
         if show_pos:
             print("pos: ",player_pos)
@@ -169,7 +172,8 @@ while running:
     pygame.draw.line(screen,color["cross_color"],(size[0]*tilesize,(size[1]-2)*tilesize),((size[0]-1)*tilesize,(size[1]-1)*tilesize),2)
     
     # test triangle
-    item.pos_item()
+    for elt in items:
+        elt.pos_item()
     # affichage des modification du screen_view
     pygame.display.flip()
     # gestion fps
