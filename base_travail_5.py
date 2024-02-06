@@ -169,14 +169,20 @@ while running:
             new_x -=1
         elif keys['RIGHT'] == 1:
             new_x += 1
+        
+        if new_x != player_pos.x or new_y != player_pos.y:
+             for ali in aliens:
+                  ali.mouv_alien(laby)
 
         # vérification du déplacement du joueur                                    
         if not laby.hit_box(new_x, new_y):
             player_pos.x, player_pos.y = new_x, new_y
-            next_move -= player_speed
+            next_move -= player_speed            
+
             for j in range (len(array_pos_item)):
                 if new_x == array_pos_item[j][0] and new_y == array_pos_item[j][1]:
                     itemFound = True
+            
 
         if show_pos:
             print("pos: ",player_pos)
@@ -203,7 +209,8 @@ while running:
     
     #test aliens
     for ali in aliens:
-         ali.pos_alien()
+         ali.pos_alien()      
+    
     
     # affichage des modification du screen_view
     pygame.display.flip()

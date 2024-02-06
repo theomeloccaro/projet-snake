@@ -7,7 +7,7 @@ class InputHandler:
         self.mouse_clicked = False
 
     def event_Polling(self, keys, running, show_grid, show_pos):
-        for event in pygame.event.get():
+        for event in pygame.event.get(): 
             if event.type == pygame.QUIT:
                 running = False
 
