@@ -71,22 +71,19 @@ dt = 0
 show_grid = True
 show_pos = False
 
-keys= { "UP":0 , "DOWN":0, "LEFT":0, "RIGHT":0 }
+direction = "UP"
 
-player_pos = Pos(0,1)
-
+player_pos=(5,9)
+player_pos2=(4,9)
+snake=[player_pos,player_pos2]
 # Utilisation de la classe dans le programme principal
-input_handler = InputHandler(keys)
+input_handler = InputHandler()
 
 #création items
 for i in range(len(array_pos_item)):
     if not laby.hit_box(array_pos_item[i][0],array_pos_item[i][1]):
         items.append(Item(screen,tilesize,item_color,array_pos_item[i][0],array_pos_item[i][1]))
 
-#création alien
-for i in range(len(array_pos_alien)):
-    if not laby.hit_box(array_pos_alien[i][0],array_pos_alien[i][1]):
-        aliens.append(Alien(screen,tilesize,alien_color,array_pos_alien[i][0],array_pos_alien[i][1],2)) 
 
 itemFound = False
 DisplayMessage = False
@@ -96,7 +93,7 @@ while running:
     #
     #   Gestion des I/O  clavier / souris
     #
-    keys, running, show_grid, show_pos = input_handler.event_Polling(keys, running, show_grid, show_pos)
+    direction, running, show_grid, show_pos = input_handler.event_Polling(direction, running, show_grid, show_pos)
     
     #
     # gestion des déplacements
@@ -104,32 +101,31 @@ while running:
 
     next_move += dt
     if next_move>0:
-        new_x, new_y = player_pos.x, player_pos.y
-        if keys['UP'] == 1:
+        new_x, new_y = player_pos[0], player_pos[1]
+        if direction == 'UP':
             new_y -=1
-        elif keys['DOWN'] == 1:
+        elif direction == 'DOWN':
             new_y += 1
-        elif keys['LEFT'] == 1:
+        elif direction == 'LEFT':
             new_x -=1
-        elif keys['RIGHT'] == 1:
+        elif direction == 'RIGHT':
             new_x += 1
-        
-        if new_x != player_pos.x or new_y != player_pos.y:
-             for ali in aliens:
-                  ali.mouv_alien(laby)
 
         # vérification du déplacement du joueur                                    
         if not laby.hit_box(new_x, new_y):
-            player_pos.x, player_pos.y = new_x, new_y
+            player_pos = new_x, new_y
             next_move -= player_speed            
 
             for j in range (len(array_pos_item)):
                 if new_x == array_pos_item[j][0] and new_y == array_pos_item[j][1]:
                     itemFound = True
             
+        snake.insert(0,player_pos)
 
-        if show_pos:
-            print("pos: ",player_pos)
+        if len(snake) > 6:
+            snake.pop()
+
+
 
     #
     # affichage des différents composants graphique
@@ -141,15 +137,13 @@ while running:
     if show_grid:
         grid.draw(screen)
 
-    # Dessinez d'abord la tuile verte à la position juste avant celle du joueur
-    pygame.draw.rect(screen, (0, 255, 0), pygame.Rect((player_pos.x - 1) * tilesize, (player_pos.y - 1) * tilesize, tilesize, tilesize))
-
-    # Ensuite, dessinez le joueur (tuile rouge)
-    pygame.draw.rect(screen, head_color, pygame.Rect(player_pos.x * tilesize, player_pos.y * tilesize, tilesize, tilesize))
-        
-    #croix dans la dernière case
-    pygame.draw.line(screen,cross_color,((size[0]-1)*tilesize,(size[1]-2)*tilesize),(size[0]*tilesize,(size[1]-1)*tilesize),2)
-    pygame.draw.line(screen,cross_color,(size[0]*tilesize,(size[1]-2)*tilesize),((size[0]-1)*tilesize,(size[1]-1)*tilesize),2)
+    print("debut")
+    for tile in snake:
+        print(tile)
+        pygame.draw.rect(screen, (0, 255, 0), (tile[0] * tilesize, tile[1] * tilesize, tilesize, tilesize))
+    print("fin")  
+    if show_pos:
+        print("pos: ",player_pos)
     
     # test items
     for elt in items:
@@ -166,15 +160,4 @@ while running:
     dt = clock.tick(fps)
 
     # Vérifier si le joueur est arrivé à la sortie
-    if grid.arriver(player_pos.x, player_pos.y):
-        if not DisplayMessage:
-            if itemFound:
-                print("Arrivé avec 1 item, level validé")
-                running = False
-                time.sleep(3)
-            else:
-                print("Arrivé sans item, level en attente de validation, rechercher le diamant")
-            DisplayMessage = True
-    else:
-        DisplayMessage = False
 pygame.quit()
