@@ -122,10 +122,12 @@ while running:
             
         snake.insert(0,player_pos)
 
-        if len(snake) > 6:
+        if len(snake) > 2:
             snake.pop()
 
-
+        if itemFound :
+            snake.insert(0,player_pos)
+            itemFound=False
 
     #
     # affichage des différents composants graphique
@@ -137,11 +139,10 @@ while running:
     if show_grid:
         grid.draw(screen)
 
-    print("debut")
-    for tile in snake:
-        print(tile)
-        pygame.draw.rect(screen, (0, 255, 0), (tile[0] * tilesize, tile[1] * tilesize, tilesize, tilesize))
-    print("fin")  
+        
+
+    for tile in snake:        
+        pygame.draw.rect(screen, (0, 255, 0), (tile[0] * tilesize, tile[1] * tilesize, tilesize, tilesize))     
     if show_pos:
         print("pos: ",player_pos)
     
