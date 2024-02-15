@@ -34,7 +34,8 @@ array_pos_item = loader.get_value("items", "array_pos_item",tuple,tuple_delimite
 
 ground_color=loader.get_value("color","ground_color",str)
 grid_color=loader.get_value("color","grid_color",str)
-player_color=loader.get_value("color","player_color",str)
+head_color=loader.get_value("color","head_color",str)
+body_color=loader.get_value("color","body_color",str)
 wall_color=loader.get_value("color","wall_color",str)
 cross_color=loader.get_value("color","cross_color",str)
 item_color=loader.get_value("color","item_color",str)
@@ -140,7 +141,7 @@ while running:
     if show_grid:
         grid.draw(screen)
 
-    pygame.draw.rect(screen, player_color, pygame.Rect(player_pos.x*tilesize, player_pos.y*tilesize, tilesize, tilesize))
+    pygame.draw.rect(screen, head_color, pygame.Rect(player_pos.x*tilesize, player_pos.y*tilesize, tilesize, tilesize))
     
     #croix dans la dernière case
     pygame.draw.line(screen,cross_color,((size[0]-1)*tilesize,(size[1]-2)*tilesize),(size[0]*tilesize,(size[1]-1)*tilesize),2)
