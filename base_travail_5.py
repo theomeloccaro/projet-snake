@@ -67,7 +67,6 @@ filename='color.ini'
 laby = Labyrinthe(size[0], size[1])
 laby.load_from_file(level)
 laby.set_color(wall_color)
-
 grid = Grid(size[0], size[1],tilesize)
 grid.set_color(grid_color)
 
@@ -139,13 +138,13 @@ while running:
             if arret:
                 print("Votre score est de "+str(score))
                 sys.exit()
-                        
-            if score == 5:
+            '''            
+            if score == 6:
                 print("Félicitations, vous avez atteint un score de 5 !")
                 sys.exit()
-
+            '''
             # Vérification si le joueur est hors du cadre
-            if new_x<0 : 
+            if new_x<0 :
                 player_pos=param["size_x"],new_y
             if new_x >param["size_x"]-1:
                 player_pos=0,new_y
@@ -172,8 +171,7 @@ while running:
 
     laby.draw(screen, tilesize)
 
-    if show_grid:
-        grid.draw(screen)       
+          
     
 
     for index, tile in enumerate(snake):
